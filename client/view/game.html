@@ -6,10 +6,15 @@
       background-color: black;
     }
 
-    #container {
+    #screen {
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+    }
+
+    #map_container {
         overflow: scroll;
-        width: 1000;
-        height: 500;
+        width: 70%;
+        height: 100%;
         position: relative;
     }
 
@@ -36,10 +41,12 @@
     }
 </style>
 
-<div id="container">
-    <div id="up_scroll"></div>
-    <div id="down_scroll"></div>
-    <canvas id="map_canvas"></canvas>
+<div id="screen">
+    <div id="map_container">
+        <div id="up_scroll"></div>
+        <div id="down_scroll"></div>
+        <canvas id="map_canvas"></canvas>
+    </div>
 </div>
 
 <script src="../js/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>
