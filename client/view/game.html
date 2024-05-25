@@ -13,52 +13,35 @@
 
     #map_container {
         overflow: scroll;
-        /* width: from screen.js */
         height: 100%;
         position: relative;
     }
 
     #up_scroll {
-        /* width: from screen.js */
-        /* height: 100px; */
-        position: absolute;
-        top: 0;
-        left: 100;
-        z-index: 10;
         position: fixed;
-        border-style: solid;
-    }
-
-    #left_scroll {
-        width: 100px;
-        height: 100%;
-        position: absolute;
         top: 0;
-        left: 0;
         z-index: 10;
-        position: fixed;
-        border-style: solid;
-    }
-
-    #right_scroll {
-        width: 100px;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        /* right: from screen.js */
-        z-index: 10;
-        position: fixed;
         border-style: solid;
     }
 
     #down_scroll {
-        width: 100px;
-        height: 20%;
-        position: absolute;
-        bottom: 70;
+        position: fixed;
+        bottom: 0;
+        z-index: 10;
+        border-style: solid;
+    }
+
+    #left_scroll {
+        position: fixed;
         left: 0;
         z-index: 10;
+        border-style: solid;
+    }
+
+    #right_scroll {
         position: fixed;
+        right: 0;
+        z-index: 10;
         border-style: solid;
     }
 </style>
@@ -67,9 +50,9 @@
 <div id="screen">
     <div id="map_container">
         <div id="up_scroll"></div>
+        <div id="down_scroll"></div>
         <div id="left_scroll"></div>
         <div id="right_scroll"></div>
-        <div id="down_scroll"></div>
         <canvas id="map_canvas"></canvas>
     </div>
 </div>
