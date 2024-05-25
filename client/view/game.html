@@ -1,5 +1,6 @@
 <head>
     <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/config.js"></script>
 </head>
 <style>
     ::-webkit-scrollbar {
@@ -50,17 +51,17 @@
 
 <div id="screen">
     <div id="map_container">
-        <div id="up_scroll"></div>
-        <div id="down_scroll"></div>
-        <div id="left_scroll"></div>
-        <div id="right_scroll"></div>
+        <div class="scroll_bar" id="up_scroll"    data-direction="up"></div>
+        <div class="scroll_bar" id="down_scroll"  data-direction="down"></div>
+        <div class="scroll_bar" id="left_scroll"  data-direction="left"></div>
+        <div class="scroll_bar" id="right_scroll" data-direction="right"></div>
         <canvas id="map_canvas"></canvas>
     </div>
 </div>
 
-<script src="../js/scroll.js" debug="true"></script>
-<script src="../js/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>
+<script src="../js/screen.js" debug="false"></script>
 <script src="../js/scroll.js"></script>
+<script src="../js/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>
 
 
 

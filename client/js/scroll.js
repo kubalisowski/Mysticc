@@ -1,46 +1,49 @@
-//https://dev.to/ak_ram/asynchronous-javascript-operations-understanding-canceling-pausing-and-resuming-4ih5
-
-var run_scroll = false
-
-$(function() { 
-    while (run_scroll) {
-        console.log(1)
-    }
+// BINDING
+$(".scroll_bar").mouseenter(function(){
+  let direction = $(this).data('direction')
+  moveMap(direction)
 })
 
+$(".scroll_bar").mouseleave(function(){
+  stopMove()
+})
 
-function startScroll() {
-    run_scroll = true
+// FUNCTIONS
+const interval_arr = []
+//
+function moveMap(direction) {
+  switch(direction) {
+    case 'up':
+      startMove(0, -config.scroll_pixel)
+      break;
+    case 'down':
+      startMove(0, config.scroll_pixel)
+      break;
+    case 'right':
+      startMove(config.scroll_pixel, 0)
+      break;
+    case 'left':
+      startMove(-config.scroll_pixel, 0)
+      break;    
+  }
 }
 
-function stopScroll() {
-    run_scroll = false
+function startMove(x_axis, y_axis) {
+  var interval_id = setInterval(
+    function () { // https://stackoverflow.com/questions/457826/pass-parameters-in-setinterval-function
+      moveScroll(x_axis, y_axis)
+    },
+    config.scroll_interval_ms
+  )
+  interval_arr.push(interval_id)
 }
 
-$('#up_scroll').mouseover(function () {
-    startScroll()
-})
+function moveScroll(x_axis, y_axis) {
+  document.getElementById("map_container").scrollBy(x_axis, y_axis)
+}
 
-$('#up_scroll').mouseout(function () {
-    stopScroll()
-})
-
-// var timeoutRefs = [];
-
-// function sleep(ms) {
-//   return new Promise(resolve => timeoutRefs.push(setTimeout(resolve, ms)));
-// }
-
-// $('#up_scroll').mouseover(function () {
-//     sleep(250).then(() => { console.log(1) })
-// })
-
-// $('#up_scroll').mouseout(function () {
-//     timeoutRefs.forEach(function (timeoutRef) {
-//         clearTimeout(timeoutRef)
-//     })
-//     timeoutRefs = []
-//     console.log(2)
-// })
-
-
+function stopMove() {
+  interval_arr.forEach((item) => {
+    clearInterval(item)
+  })
+}
