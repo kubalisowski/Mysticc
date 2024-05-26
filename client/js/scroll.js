@@ -1,14 +1,14 @@
-// BINDING
-$(".scroll_bar").mouseenter(function(){
+///// BINDING
+$(".scrolling").mouseenter(function(){
   let direction = $(this).data('direction')
   moveMap(direction)
 })
 
-$(".scroll_bar").mouseleave(function(){
+$(".scrolling").mouseleave(function(){
   stopMove()
 })
 
-// FUNCTIONS
+///// FUNCTIONS
 const interval_arr = []
 //
 function moveMap(direction) {
@@ -25,6 +25,18 @@ function moveMap(direction) {
     case 'left':
       startMove(-config.scroll_pixel, 0)
       break;    
+    case 'up-left':
+      startMove(-config.scroll_pixel, -config.scroll_pixel)
+      break;
+    case 'up-right':
+      startMove(config.scroll_pixel, -config.scroll_pixel)
+      break;
+    case 'down-left':
+      startMove(config.scroll_pixel, config.scroll_pixel)
+      break;
+    case 'down-right':
+      startMove(-config.scroll_pixel, config.scroll_pixel)
+      break;  
   }
 }
 
