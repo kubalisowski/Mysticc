@@ -1,7 +1,7 @@
 // MAP CONTAINER //
 $("#map_container").css("width", `${config.map_container_width}`) 
 // UP //
-var up_scroll_width = config.map_container_width * 0.8
+var up_scroll_width = config.map_container_width //config.map_container_width * 0.8
 var up_scroll_height = config.map_container_height * 0.11
 $("#up_scroll").css("width", `${up_scroll_width}`) 
 $("#up_scroll").css("height", `${up_scroll_height}`) 

@@ -1,52 +1,8 @@
 <head>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="../js/config.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/map_container.css" /> 
 </head>
-<style>
-    ::-webkit-scrollbar {
-        width: 0px;
-        height: 0px;
-        background: transparent; 
-    }
-
-    body {
-      background-color: black;
-    }
-
-    #screen {
-        position: absolute;
-        top: 0; right: 0; bottom: 0; left: 0;
-    }
-
-    #map_container {
-        overflow: scroll;
-        height: 100%;
-        position: relative;
-    }
-
-    #up_scroll {
-        position: fixed;
-        top: 0;
-        z-index: 10;
-    }
-
-    #down_scroll {
-        position: fixed;
-        bottom: 0;
-        z-index: 10;
-    }
-
-    #left_scroll {
-        position: fixed;
-        left: 0;
-        z-index: 10;
-    }
-
-    #right_scroll {
-        position: fixed;
-        z-index: 10;
-    }
-</style>
 
 
 <div id="screen">
@@ -59,7 +15,7 @@
     </div>
 </div>
 
-<script src="../js/screen.js" debug="true"></script>
+<script src="../js/screen.js" debug="false"></script>
 <script src="../js/scroll.js"></script>
 <script src="../js/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>
 

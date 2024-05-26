@@ -1,0 +1,43 @@
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent; 
+}
+
+body {
+  background-color: black;
+}
+
+#screen {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+}
+
+#map_container {
+    overflow: scroll;
+    height: 100%;
+    position: relative;
+}
+
+#up_scroll {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+#down_scroll {
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+}
+
+#left_scroll {
+    position: fixed;
+    left: 0;
+    z-index: 10;
+}
+
+#right_scroll {
+    position: fixed;
+    z-index: 10;
+}
