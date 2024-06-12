@@ -1,0 +1,32 @@
+<head>
+    <script src="../client/js/lib/jquery-3.7.1.min.js"></script>
+    <script src="../client/js/config.js"></script>
+    <script src="../client/js/model/game_object.js"></script>
+    <link rel="stylesheet" type="text/css" href="../client/css/screen.css" /> 
+</head>
+
+
+<div id="screen">
+    <div id="map_container">
+        <div class="scrolling scroll_bar" id="up_scroll"    data-direction="up"></div>
+        <div class="scrolling scroll_bar" id="down_scroll"  data-direction="down"></div>
+        <div class="scrolling scroll_bar" id="left_scroll"  data-direction="left"></div>
+        <div class="scrolling scroll_bar" id="right_scroll" data-direction="right"></div>
+        <div class="scrolling scroll_bar_corner" id="up_left_scroll"    data-direction="up-left"></div>
+        <div class="scrolling scroll_bar_corner" id="up_right_scroll"   data-direction="up-right"></div>
+        <div class="scrolling scroll_bar_corner" id="down_right_scroll" data-direction="down-left"></div>
+        <div class="scrolling scroll_bar_corner" id="down_left_scroll"  data-direction="down-right"></div>
+        <canvas id="map_canvas"></canvas>
+    </div>
+</div>
+
+<script src="../client/js/game/screen.js" debug="false"></script>
+
+<script src="../client/js/game/scroll.js"></script>
+<script src="../client/js/game/game.js" width="3360" height="1920" map-src="../client/object/map/map1.png"></script>
+
+
+
+
+
+
