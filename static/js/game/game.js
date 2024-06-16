@@ -62,24 +62,10 @@ function animate() {
         let item = game_objects[i]    
         drawObject(item.img_object, item.width * item.frameX, item.height * item.frameY, item.width, item.height, item.x, item.y, item.width, item.height)
         moveByKey(game_objects[i])
-        handleObjectFrameX(game_objects[i])
     }
   }
 }
 startAnimating(10)
-
-// function main() {
-//     c.clearRect(0, 0, c.width, c.height)
-//     c.drawImage(map, 0, 0)
-//     for (let i = 0; i < game_objects.length; i++) {
-//         let item = game_objects[i]    
-//         drawObject(item.img_object, item.width * item.frameX, item.height * item.frameY, item.width, item.height, item.x, item.y, item.width, item.height)
-//         moveByKey(game_objects[i])
-//         handleObjectFrameX(game_objects[i])
-//     }
-//     requestAnimationFrame(main)
-// }
-// main()
 
 // MOVEMENT
 window.addEventListener("keydown", function (e) {
@@ -130,9 +116,7 @@ function moveObject(obj, command) {
             obj.moving = true
           break
     }
-}
-
-function handleObjectFrameX(obj) {
-  if (obj.frameX < 3 && obj.moving) obj.frameX++
-  else  obj.frameX = 0
+    // handle object frame X
+    if (obj.frameX < 3 && obj.moving) obj.frameX++
+    else  obj.frameX = 0
 }

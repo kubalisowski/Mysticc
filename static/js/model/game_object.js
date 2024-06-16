@@ -10,6 +10,7 @@ class GameObject {
         this.speed = speed
         this.moving = moving
         this.img_src = img_src
+        
         this.img_object
     }
 }
