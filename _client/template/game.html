@@ -1,10 +1,25 @@
 <head>
-    <script src="../js/lib/jquery-3.7.1.min.js"></script>
+    <!-- CONFIG -->
     <script src="../js/config.js"></script>
+    <!-- LIB -->
+    <script src="../js/lib/jquery-3.7.1.min.js"></script>
+    <script src="../js/lib/socket.io.js"></script>
+    <!-- SCRIPTS -->
+    <script src="../js/game/screen.js" debug="false"></script>
+    <script src="../js/game/scroll.js"></script>
+    <script src="../js/game/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>    
+    <!-- MODEL -->
     <script src="../js/model/game_object.js"></script>
+    <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../css/screen.css" /> 
 </head>
 
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://127.0.0.1:5000/')
+    socket.on('game_objects_update', function(data) {
+        console.log("Otrzymano dane z WebSocket:", data)
+    })
+</script>
 
 <div id="screen">
     <div id="map_container">
@@ -20,10 +35,6 @@
     </div>
 </div>
 
-<script src="../js/game/screen.js" debug="false"></script>
-
-<script src="../js/game/scroll.js"></script>
-<script src="../js/game/game.js" width="3360" height="1920" map-src="../object/map/map1.png"></script>
 
 
 

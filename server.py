@@ -1,22 +1,35 @@
+import eventlet
+eventlet.monkey_patch(thread=True, time=True)
 from cmath import e
 from flask import Flask, jsonify, make_response, render_template
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from database.model import test, map, game_object
 from database.model.test import Test
 from database.model.game_object import GameObject
 from database._db import session
 from service.db_service import *
+from service.game_object_service import *
+from apscheduler.schedulers.background import BackgroundScheduler
+import json
 
-app = Flask(__name__)
+app = Flask(__name__); 
 app.config['SECRET_KEY'] = "secret!"
+app.app_context().push()
 socketio = SocketIO(app)
-
+print(2)
 init_db()
+print(1)
+#socket = socketio.AsyncSimpleClient()
+#socket = socketio.SimpleClient()
+#socket.connect('http://localhost:5000', transports=['websocket'])
 
 @app.route("/", methods=['GET'])
 def game():
-    return render_template("game.html")
+    objects = get_all_game_objects_json()
+    return render_template("game.html", game_objects = objects)  
 
+
+### CONTROLLERS ###
 @app.route("/test", methods=['GET'])
 def test():
     try:
@@ -24,6 +37,27 @@ def test():
         return make_response(jsonify([obj.json() for obj in objects]), 200)
     except Exception as e:
         return make_response(jsonify({'error message': '{0}'.format(e)}), 500)
+
+### SOCKET-IO ###
+
+### SCHEDULER ###
+active_schedulers = []
+def update_game_objects():
+    try:
+        game_objects = session.query(GameObject).all()
+        #json_game_objects = [obj.json() for obj in game_objects]
+        socketio.emit('game_objects_update', get_all_game_objects_json())
+        print(get_all_game_objects_json())
+    except Exception as e:
+        print(e)
+
+def scheduler_start():
+    scheduler = BackgroundScheduler(daemon=True)
+    scheduler.add_job(update_game_objects, 'interval', seconds=1, id="update-game-objects")
+    scheduler.start()
+    active_schedulers.append(scheduler)
+
+socketio.start_background_task(scheduler_start)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

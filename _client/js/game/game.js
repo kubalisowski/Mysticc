@@ -3,6 +3,12 @@ var height = document.currentScript.getAttribute('height')
 var map_src = document.currentScript.getAttribute('map-src')
 //import GameObject from "../model/game_object.js"
 
+var socket = io.connect('http://127.0.0.1:5000/')
+socket.on('game_objects_update', function(data) {
+  console.log("Otrzymano dane z WebSocket:", data)
+  game_objects = data
+})
+
 const canvas = document.querySelector('#map_canvas')
 const c = canvas.getContext('2d')
 
@@ -21,21 +27,21 @@ const action_queue = []
 const keys = []
 ////////
 //DEBUG
-const player = new GameObject ()
-player.id = 1
-player.x = 50
-player.y = 50
-player.width = 32
-player.height = 48
-player.frameX = 1
-player.frameY = 1
-player.speed = 10
-player.moving = false
-player.img_src = '../object/character/indianajones.png'
-let player_img = new Image()
-player_img.src = player.img_src
-player.img_object = player_img
-game_objects.push(player)
+// const player = new GameObject ()
+// player.id = 1
+// player.x = 50
+// player.y = 50
+// player.width = 32
+// player.height = 48
+// player.frameX = 1
+// player.frameY = 1
+// player.speed = 10
+// player.moving = false
+// player.img_src = '../object/character/indianajones.png'
+// let player_img = new Image()
+// player_img.src = player.img_src
+// player.img_object = player_img
+// game_objects.push(player)
 ////////
 ////////
 function drawObject(img, srcX, srcY, srcW, srcH, destX, destY, destW, destH) {
