@@ -12,24 +12,18 @@ from service.game_object_service import *
 from apscheduler.schedulers.background import BackgroundScheduler
 import json
 
-app = Flask(__name__); 
+app = Flask(__name__)
 app.config['SECRET_KEY'] = "secret!"
 app.app_context().push()
 socketio = SocketIO(app)
-print(2)
 init_db()
-print(1)
-#socket = socketio.AsyncSimpleClient()
-#socket = socketio.SimpleClient()
-#socket.connect('http://localhost:5000', transports=['websocket'])
 
+### CONTROLLERS ###
 @app.route("/", methods=['GET'])
 def game():
     objects = get_all_game_objects_json()
     return render_template("game.html", game_objects = objects)  
 
-
-### CONTROLLERS ###
 @app.route("/test", methods=['GET'])
 def test():
     try:
@@ -38,16 +32,16 @@ def test():
     except Exception as e:
         return make_response(jsonify({'error message': '{0}'.format(e)}), 500)
 
-### SOCKET-IO ###
+### INIT TASKS ###
+# def render_map():
+#     S
 
 ### SCHEDULER ###
-active_schedulers = []
+@socketio.on('game_objects_update')
 def update_game_objects():
     try:
-        game_objects = session.query(GameObject).all()
-        #json_game_objects = [obj.json() for obj in game_objects]
+        #print(get_all_game_objects_json())
         socketio.emit('game_objects_update', get_all_game_objects_json())
-        print(get_all_game_objects_json())
     except Exception as e:
         print(e)
 
@@ -55,7 +49,6 @@ def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
     scheduler.add_job(update_game_objects, 'interval', seconds=1, id="update-game-objects")
     scheduler.start()
-    active_schedulers.append(scheduler)
 
 socketio.start_background_task(scheduler_start)
 

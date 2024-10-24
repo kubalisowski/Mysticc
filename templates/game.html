@@ -1,7 +1,12 @@
 <head>
     <script src="{{ url_for('static', filename='js/lib/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/socket.io.min.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/config.js') }}"></script>
+
     <script src="{{ url_for('static', filename='js/config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/model/game_object.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/game/socket.js') }}"></script>
+    
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/screen.css') }}" /> 
 </head>
 
@@ -23,7 +28,5 @@
 <script src="{{ url_for('static', filename='js/game/screen.js') }}" debug="false"></script>
 <script src="{{ url_for('static', filename='js/game/scroll.js') }}"></script>
 <script src="{{ url_for('static', filename='js/game/game.js') }}" width="3360" height="1920" map-src="{{ url_for('static', filename='object/map/map1.png') }}"></script>
-
-
 
 
