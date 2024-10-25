@@ -7,5 +7,6 @@ def execute_script(script_path):
             query = text(file.read())
             con.execute(query)
 
+
 def init_db():
     Base.metadata.create_all(engine, Base.metadata.tables.values(), checkfirst=True)

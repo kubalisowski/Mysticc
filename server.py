@@ -3,12 +3,11 @@ eventlet.monkey_patch(thread=True, time=True)
 from cmath import e
 from flask import Flask, jsonify, make_response, render_template
 from flask_socketio import SocketIO, emit
-from database.model import test, map, game_object
-from database.model.test import Test
+from database.model import map, game_object
 from database.model.game_object import GameObject
 from database._db import session
 from service.db_service import *
-from service.game_object_service import *
+from service.game_service import *
 from apscheduler.schedulers.background import BackgroundScheduler
 import json
 
@@ -21,20 +20,15 @@ init_db()
 ### CONTROLLERS ###
 @app.route("/", methods=['GET'])
 def game():
-    objects = get_all_game_objects_json()
-    return render_template("game.html", game_objects = objects)  
+    return render_template("game.html", map_name="main")  
 
-@app.route("/test", methods=['GET'])
-def test():
-    try:
-        objects = session.query(GameObject).all()
-        return make_response(jsonify([obj.json() for obj in objects]), 200)
-    except Exception as e:
-        return make_response(jsonify({'error message': '{0}'.format(e)}), 500)
-
-### INIT TASKS ###
-# def render_map():
-#     S
+# @app.route("/test", methods=['GET'])
+# def test():
+#     try:
+#         objects = session.query(GameObject).all()
+#         return make_response(jsonify([obj.json() for obj in objects]), 200)
+#     except Exception as e:
+#         return make_response(jsonify({'error message': '{0}'.format(e)}), 500)
 
 ### SCHEDULER ###
 @socketio.on('game_objects_update')

@@ -1,13 +1,21 @@
-var width = document.currentScript.getAttribute('width')
-var height = document.currentScript.getAttribute('height')
-var map_src = document.currentScript.getAttribute('map-src')
-//import GameObject from "../model/game_object.js"
+var map_name = document.currentScript.getAttribute('map-src')
+
+var map
+$.post(
+  "demo_test_post.asp",
+  {
+    map_name: map_name
+  },
+  function(data){
+    map = data
+  }
+);
 
 const canvas = document.querySelector('#map_canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = width
-canvas.height = height
+canvas.width  = map.width  * config.tile_width
+canvas.height = map.height * config.tile_height
 
 c.fillStyle = 'white'
 c.fillRect(0, 0, canvas.width, canvas.height)
