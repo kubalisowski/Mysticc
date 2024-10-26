@@ -12,9 +12,9 @@ class Map(Base):
     
     def json(self):
         return {
-            'id'     : self.id,
-            'name'   : self.name,    
-            'img_src': self.img_src,    
-            'width'  : self.width, 
-            'height' : self.height,
+            'id'          : self.id,
+            'name'        : self.name,    
+            'img_src'     : self.img_src,    
+            'width_tile'  : self.width_tile, 
+            'height_tile' : self.height_tile,
         }

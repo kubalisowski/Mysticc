@@ -13,10 +13,10 @@
 
 <div id="screen">
     <div id="map_container">
-        <div class="scrolling scroll_bar" id="up_scroll"    data-direction="up"></div>
-        <div class="scrolling scroll_bar" id="down_scroll"  data-direction="down"></div>
-        <div class="scrolling scroll_bar" id="left_scroll"  data-direction="left"></div>
-        <div class="scrolling scroll_bar" id="right_scroll" data-direction="right"></div>
+        <div class="scrolling scroll_bar"        id="up_scroll"         data-direction="up"></div>
+        <div class="scrolling scroll_bar"        id="down_scroll"       data-direction="down"></div>
+        <div class="scrolling scroll_bar"        id="left_scroll"       data-direction="left"></div>
+        <div class="scrolling scroll_bar"        id="right_scroll"      data-direction="right"></div>
         <div class="scrolling scroll_bar_corner" id="up_left_scroll"    data-direction="up-left"></div>
         <div class="scrolling scroll_bar_corner" id="up_right_scroll"   data-direction="up-right"></div>
         <div class="scrolling scroll_bar_corner" id="down_right_scroll" data-direction="down-left"></div>
@@ -25,8 +25,19 @@
     </div>
 </div>
 
+<!-- CLASS INSTANCE NOT REQUIRED (binded to html while loaded) -->
 <script src="{{ url_for('static', filename='js/game/screen.js') }}" debug="false"></script>
 <script src="{{ url_for('static', filename='js/game/scroll.js') }}"></script>
-<script src="{{ url_for('static', filename='js/game/game.js') }}" map-name="{{ map_name }}"></script>
+<!-- CLASS INSTANCE REQUIRED -->
+<script src="{{ url_for('static', filename='js/game/game.js') }}"></script>
+
+<script type="text/javascript">
+    var info = {{ info|tojson|safe }}
+    var socket = new Socket(config)
+    socket.init(info.map)
+
+    var game = new Game(config)
+    game.init(info.map)
+</script>
 
 

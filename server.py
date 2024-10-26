@@ -2,7 +2,7 @@ import eventlet
 eventlet.monkey_patch(thread=True, time=True)
 from cmath import e
 from flask import Flask, jsonify, make_response, render_template
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from database.model import map, game_object
 from database.model.game_object import GameObject
 from database._db import session
@@ -20,7 +20,22 @@ init_db()
 ### CONTROLLERS ###
 @app.route("/", methods=['GET'])
 def game():
-    return render_template("game.html", map_name="main")  
+    mapName = 'map1' # later -> dynamic map selection (per user)
+    data = {}
+    data['map'] = get_map_by_name(mapName).json()
+    return render_template("game.html", info=json.dumps(data))  
+
+@socketio.on('joinroom')
+def on_join(data):
+    room = data['room']
+    join_room(room)
+    socketio.emit('message', f'Joined the room: {room}', to=room)
+
+@socketio.on('leaveroom')
+def on_leave(data):
+    room = data['room']
+    leave_room(room)    
+    print('Leaved room')
 
 # @app.route("/test", methods=['GET'])
 # def test():

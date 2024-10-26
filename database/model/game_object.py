@@ -18,15 +18,15 @@ class GameObject(Base):
 
     def json(self):
         return {
-            'id': self.id,
-            'x': self.x,      
-            'y': self.y,      
-            'width': self.width, 
-            'height': self.height,
-            'frameX': self.frameX, 
-            'frameY': self.frameY, 
-            'speed': self.speed,  
-            'moving': self.moving, 
+            'id'     : self.id,
+            'x'      : self.x,      
+            'y'      : self.y,      
+            'width'  : self.width, 
+            'height' : self.height,
+            'frameX' : self.frameX, 
+            'frameY' : self.frameY, 
+            'speed'  : self.speed,  
+            'moving' : self.moving, 
             'img_src': self.img_src,
-            'player': self.player,
+            'player' : self.player,
         }
