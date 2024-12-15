@@ -3,7 +3,7 @@ eventlet.monkey_patch(thread=True, time=True)
 from cmath import e
 from flask import Flask, jsonify, make_response, render_template
 from flask_socketio import SocketIO, emit, join_room, leave_room
-from database.model import map, game_object
+from database.model import game_object, map
 from database.model.game_object import GameObject
 from database._db import session
 from service.db_service import *

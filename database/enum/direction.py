@@ -1,5 +1,5 @@
 class Direction():
-    LEFT  = 0
-    UP    = 1
-    RIGHT = 2
-    DOWN  = 3
+    UP    = 0
+    RIGHT = 1
+    DOWN  = 2
+    LEFT  = 3
