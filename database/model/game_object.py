@@ -12,10 +12,11 @@ class GameObject(Base):
     height              = Column(Integer)
     frameX              = Column(Integer)
     frameY              = Column(Integer)
-    speed               = Column(Integer)
+    speed_monotic               = Column(Integer)
     moving              = Column(Boolean)
     img_src             = Column(String(length=100))
-    idle_stop_monotonic = Column(float)
+    next_move_monotonic = Column(float)
+    idle_time_monotonic = Column(float)
     player              = Column(Boolean)
     static              = Column(Boolean)
 
@@ -29,10 +30,11 @@ class GameObject(Base):
             'height' : self.height,
             'frameX' : self.frameX, 
             'frameY' : self.frameY, 
-            'speed'  : self.speed,  
+            'speed_monotic'  : self.speed_monotic,  
             'moving' : self.moving, 
             'img_src': self.img_src,
-            'idle_stop_monotonic': self.idle_stop_monotonic,
+            'next_move_monotonic': self.next_move_monotonic,
+            'idle_time_monotonic': self.idle_time_monotonic,
             'player' : self.player,
             'static' : self.static,
         }

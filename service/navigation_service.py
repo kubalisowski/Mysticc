@@ -9,10 +9,10 @@ def draw_new_target(ecxlude_x, exclude_y, tiles_x, tiles_y):
 def generate_path(object, obstacle_x, obstacle_y):
     if (object.x == 0 or object.y == 0):
         return {"error": 0}
-    path = None # use path finding algorith (A*) and return directions (direction.py) return array of directions
-    # draw_new_target()
-    return {} # {object.id: path[moves], "target_x": path["target_x"], "target_y": path["target_y"]}
+    path = None # TODO: A* to be implemented -> use path finding algorith (A*) and return directions (direction.py) return array of directions;
+    #path = {"dir": dir, "x": target_x, "y": target_y } ##dir->direction
 
+    return {} # {"object": object, "path": path, "target_x": true, "target_y": false} # Object should have new x and y set up 
 
 
 

@@ -9,7 +9,8 @@ CREATE TABLE `game_object` (
   `speed`               int(11) 	   DEFAULT NULL,
   `moving`              bit(1)	 	   DEFAULT NULL,
   `img_src`             varchar(100) DEFAULT NULL,
-  `idle_stop_monotonic` float        DEFAULT NULL,
+  `next_move_monotonic` float        DEFAULT NULL,
+  `idle_time_monotonic` float        DEFAULT NULL,
   `player` 	            bit(1)	 	   DEFAULT NULL,
   `static` 	            bit(1)	 	   DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -24,25 +25,25 @@ CREATE TABLE `map` (
   PRIMARY KEY (`id`)
 )
 
-CREATE TABLE `map_object` (
+CREATE TABLE `config` (
   `id` 	   		     int(11) NOT NULL AUTO_INCREMENT,
-  `map_id` 		     int(11) NOT NULL,
-  `game_object_id` int(11) NOT NULL,
-  `x_position`     int(11) NOT NULL,
-  `y_position`     int(11) NOT NULL,
-  `move` 	         bit(1)	 NOT NULL,  
+  `name` 		       nvarchar(100) DEFAULT NULL,
+  `value`          nvarchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
 
-CREATE TABLE `map_matrix` (
-  `id` 	   	  int(11) NOT NULL AUTO_INCREMENT,
-  `map_id` 	  int(11) NOT NULL,
-  `tile_type` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-)
+-- CREATE TABLE `map_object` (
+--   `id` 	   		     int(11) NOT NULL AUTO_INCREMENT,
+--   `map_id` 		     int(11) NOT NULL,
+--   `game_object_id` int(11) NOT NULL,
+--   `x_position`     int(11) NOT NULL,
+--   `y_position`     int(11) NOT NULL,
+--   `move` 	         bit(1)	 NOT NULL,  
+--   PRIMARY KEY (`id`)
+-- )
 
-CREATE TABLE `move_object` (
-  `id` 	   	  int(11) NOT NULL AUTO_INCREMENT,
-  ``
-  PRIMARY KEY (`id`)
+-- CREATE TABLE `move_object` (
+--   `id` 	   	  int(11) NOT NULL AUTO_INCREMENT,
+--   ``
+--   PRIMARY KEY (`id`)
 )
