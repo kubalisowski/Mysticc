@@ -89,7 +89,7 @@ def move_objects():
 
 def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(move_objects, 'interval', seconds=config.move_object_speed_sec, id="move_objects")
+    scheduler.add_job(move_objects, 'interval', seconds=get_setting("move_object_speed_sec"), id="move_objects")
     scheduler.start()
 
 socketio.start_background_task(scheduler_start)
