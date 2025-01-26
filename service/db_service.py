@@ -1,4 +1,5 @@
 from sqlalchemy import text
+from sqlalchemy_utils import database_exists
 from database._db import engine, Base
 
 def execute_script(script_path):
@@ -9,4 +10,5 @@ def execute_script(script_path):
 
 
 def init_db():
-    Base.metadata.create_all(engine, Base.metadata.tables.values(), checkfirst=True)
+    if not database_exists(engine.url):
+        Base.metadata.create_all(engine, Base.metadata.tables.values(), checkfirst=True)

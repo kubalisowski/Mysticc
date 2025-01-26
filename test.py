@@ -20,17 +20,27 @@ import time
 #     print(object)
 
 #################
-movement = [
-    {"paths": [1, 2, 3]},
-    {"paths": [4, 5, 6]},
-]
+class Test():
+    def __init__(self, prop1, prop2, prop3):
+        self.prop1 = prop1
+        self.prop2 = prop2
+        self.prop3 = prop3
 
-idx_mov = 0  # First dictionary in the list
-idx_dir = 1  # Second element in the "paths" list
+test = Test(123, "value", 3.14)
 
-del movement[idx_mov]["paths"][idx_dir]
+from database._db import session
+# from database.model.world_object import WorldObject
+from service.util_service import *
+import _config
 
-print(movement)
+props = get_props(_config)
+for k,v in props.items():
+    print(type(props))
+
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 from sqlalchemy import Column, DateTime, String, Integer, Boolean, func
 from database._db import Base
+from service.util_service import *
 
 class Map(Base):
     __tablename__ = 'map'
@@ -11,10 +12,13 @@ class Map(Base):
     height_tile  = Column(Integer)
     
     def json(self):
-        return {
-            'id'          : self.id,
-            'name'        : self.name,    
-            'img_src'     : self.img_src,    
-            'width_tile'  : self.width_tile, 
-            'height_tile' : self.height_tile,
-        }
+        return get_props(self)
+
+    # def json(self):
+    #     return {
+    #         'id'          : self.id,
+    #         'name'        : self.name,    
+    #         'img_src'     : self.img_src,    
+    #         'width_tile'  : self.width_tile, 
+    #         'height_tile' : self.height_tile,
+    #     }

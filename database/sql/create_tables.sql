@@ -1,4 +1,4 @@
-CREATE TABLE `game_object` (
+CREATE TABLE `world_object` (
   `id` 		              int(11)  	   NOT NULL AUTO_INCREMENT,
   `x` 		              int(11)  	   DEFAULT NULL,
   `y` 		              int(11)  	   DEFAULT NULL,
@@ -27,6 +27,7 @@ CREATE TABLE `map` (
 
 CREATE TABLE `config` (
   `id` 	   		     int(11) NOT NULL AUTO_INCREMENT,
+  `type` 		       nvarchar(100) DEFAULT NULL,
   `name` 		       nvarchar(100) DEFAULT NULL,
   `value`          nvarchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -35,7 +36,7 @@ CREATE TABLE `config` (
 -- CREATE TABLE `map_object` (
 --   `id` 	   		     int(11) NOT NULL AUTO_INCREMENT,
 --   `map_id` 		     int(11) NOT NULL,
---   `game_object_id` int(11) NOT NULL,
+--   `world_object_id` int(11) NOT NULL,
 --   `x_position`     int(11) NOT NULL,
 --   `y_position`     int(11) NOT NULL,
 --   `move` 	         bit(1)	 NOT NULL,  

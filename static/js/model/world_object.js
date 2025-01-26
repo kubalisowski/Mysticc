@@ -1,4 +1,4 @@
-class GameObject {
+class WorldObject {
     constructor (id, x, y, width, height, frameX, frameY, speed, moving, img_src, player=false) {
         this.id = id
         this.x = x

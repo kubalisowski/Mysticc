@@ -1,11 +1,12 @@
 <head>
+    <!--  config loaded first -->
+    <script type="module" src="{{ url_for('static', filename='js/config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/socket.io.min.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='js/config.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/config.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/model/game_object.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/game/socket.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/model/world_object.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/world/socket.js') }}"></script>
     
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/screen.css') }}" /> 
 </head>
@@ -26,18 +27,15 @@
 </div>
 
 <!-- CLASS INSTANCE NOT REQUIRED (binded to html while loaded) -->
-<script src="{{ url_for('static', filename='js/game/screen.js') }}" debug="false"></script>
-<script src="{{ url_for('static', filename='js/game/scroll.js') }}"></script>
+<script src="{{ url_for('static', filename='js/world/screen.js') }}" debug="false"></script>
+<script src="{{ url_for('static', filename='js/world/scroll.js') }}"></script>
 <!-- CLASS INSTANCE REQUIRED -->
-<script src="{{ url_for('static', filename='js/game/game.js') }}"></script>
+<script src="{{ url_for('static', filename='js/world/world.js') }}"></script>
 
 <script type="text/javascript">
-    var info = {{ info|tojson|safe }}
-    var socket = new Socket(config)
-    socket.init(info.map)
-
-    var game = new Game(config)
-    game.init(info.map)
+    // !config loaded from jinja variable in config.js
+    var world = World()
+    world.init()
 </script>
 
 
