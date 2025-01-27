@@ -9,13 +9,14 @@ from database._db import session
 from service.db_service import *
 from service.world_service import *
 from service.util_service import *
+from service.navigation_service import *
 from apscheduler.schedulers.background import BackgroundScheduler
 import json
 import time
 from sqlalchemy import text
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = get_setting("secret_key")
+app.config['SECRET_KEY'] = setting("secret_key")
 app.app_context().push()
 socketio = SocketIO(app)
 init_db()
@@ -23,7 +24,7 @@ init_db()
 ### CONTROLLERS ###
 @app.route("/", methods=['GET'])
 def world():
-    config_common = get_config_db("common")
+    config_common = get_setting_db("common")
     config_update = next((obj for obj in config_common if obj.key == "default_map_name"), None)
     if config_update:
         config_update.map_name = config_update.default_map_name
@@ -64,32 +65,13 @@ def on_leave(data):
 ### SCHEDULER FUNC ###
 # {"object": object, "paths": path[moves as config.directions], "target_x": true, "target_y": false}
 movement = []
-def move_objects():
-    try:
-        for idx_mov, mov in enumerate(movement[:]):
-            for idx_dir, dir in enumerate(mov.path["dir"][:]):  #use a copy of the list [:] to remove 
-                if int(mov["object"]["next_move_monotic"]) < time.monotonic():
-                    del movement[idx_mov]["path"]["dir"][idx_dir] #del old move
-                    movement[idx_mov + 1]["object"].next_move_monotonic = time.monotonic() + movement[idx_mov + 1]["object"].speed_monotic #when next move can be send to client                    
-                    world_object = get_world_object(mov.id) #get world object from db for quick update x and y
-                    world_object.x = mov["object"]["x"]
-                    world_object.y = mov["object"]["y"]
-                    world_object.moving = True
-                    map = get_map_by_id(world_object.map_id)
-                    socketio.emit("move_objects", json.dumps({"object_id": mov.id, "dir": dir}), to=map.name)
-                    
-                    if to_bool(mov["target_x"]) != True and to_bool(mov["target_y"]) != True: #del object info if it reached the target (clear the buffer)
-                        del movement[idx_mov]
-                        world_object.moving = False
-                        world_object.next_move_monotonic = time.monotonic() + world_object.idle_time_monotonic
-
-                    update_world_object(world_object)
-    except Exception as c:
-        print(e) #Todo logs
+def emit_move(movement_array):
+    for item in move_objects(movement_array):
+        socketio.emit("move_objects", json.dumps(item), to=item["map_name"])
 
 def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(move_objects, 'interval', seconds=get_setting("move_object_speed_sec"), id="move_objects")
+    scheduler.add_job(emit_move, 'interval', args=[movement], seconds=setting("move_object_speed_sec"), id="move_objects")
     scheduler.start()
 
 socketio.start_background_task(scheduler_start)

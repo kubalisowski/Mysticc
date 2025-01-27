@@ -1,21 +1,21 @@
 from database._db import session
 from database.model.world_object import WorldObject
+from database.model.setting import Setting
 from database.model.map import Map
 from navigation_service import *
 from util_service import *
-from _config import *
 import time
 import json
 
 ### CONFIG ###
-def get_config_db():
-    return session.query(Config).all()
+def get_setting_db():
+    return session.query(Setting).all()
 
-def get_config_db(type):
-    return session.query(Config).filter_by(type=type).all()
+def get_setting_db(type):
+    return session.query(Setting).filter_by(type=type).all()
 
-def get_setting(name):
-    return session.query(Config).filter_by(name=name).first()
+def setting(name):
+    return session.query(Setting).filter_by(name=name).first()
 
 ### MAP ###
 def get_all_maps():

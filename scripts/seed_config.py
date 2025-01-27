@@ -1,4 +1,18 @@
 # seed config here
+from database._db import session
+from database.model.setting import Setting
+
+newToner1 = Setting(type  = "",
+                    key   = "",
+                    value = "")
+
+newToner2 = Toner(toner_id = 2,
+                    toner_color = 'red',
+                    toner_hex = '#F01731')
+
+dbsession.add_all([newToner1, newToner2])   
+dbsession.commit()
+
 class ConfigCommon():
     host = 'http://127.0.0.1:5000/'
 
