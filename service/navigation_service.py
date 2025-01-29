@@ -6,6 +6,7 @@ from service.db_service import *
 from service.world_service import *
 from service.util_service import *
 from service.navigation_service import *
+from service.world_service import *
 
 def draw_new_target(ecxlude_x, exclude_y, tiles_x, tiles_y):    
     new_x = random.choice([i for i in range(1,tiles_x) if i not in ecxlude_x])
@@ -31,7 +32,7 @@ def move_objects(movement):
                         world_object.next_move_monotonic = time.monotonic() + world_object.idle_time_monotonic
 
                     update_world_object(world_object)
-                    yield json.dumps({"map_name": map.name, "object_id": mov.id, "dir": dir})
+                    yield {"map_name": map.name, "object_id": mov.id, "dir": dir}
     except Exception as c:
         print(c) #Todo logs
 

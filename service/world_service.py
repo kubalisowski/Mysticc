@@ -7,16 +7,6 @@ from util_service import *
 import time
 import json
 
-### CONFIG ###
-def get_setting_db():
-    return session.query(Setting).all()
-
-def get_setting_db(type):
-    return session.query(Setting).filter_by(type=type).all()
-
-def setting(name):
-    return session.query(Setting).filter_by(name=name).first()
-
 ### MAP ###
 def get_all_maps():
     return session.query(Map).all()

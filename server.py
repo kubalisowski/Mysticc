@@ -10,25 +10,25 @@ from service.db_service import *
 from service.world_service import *
 from service.util_service import *
 from service.navigation_service import *
+from service.config_service import *
 from apscheduler.schedulers.background import BackgroundScheduler
 import json
 import time
 from sqlalchemy import text
+from config import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = setting("secret_key")
+app.config['SECRET_KEY'] = SECRET_KEY
 app.app_context().push()
 socketio = SocketIO(app)
 init_db()
 
 ### CONTROLLERS ###
-@app.route("/", methods=['GET'])
+@app.route('/', methods=['GET'])
 def world():
-    config_common = get_setting_db("common")
-    config_update = next((obj for obj in config_common if obj.key == "default_map_name"), None)
-    if config_update:
-        config_update.map_name = config_update.default_map_name
-    return render_template("world.html", config=json.dumps(config_common))  
+    client_config = get_client_config()
+    client_config['DEFAULT_MAP_NAME'] = setting('DEFAULT_MAP_NAME')
+    return render_template('world.html', config=json.dumps(client_config)) 
 
 # @socketio.on('rootville')
 # def rootville():
@@ -46,7 +46,7 @@ def on_leave(data):
     leave_room(room)    
     print('Leaved room')
 
-# @app.route("/test", methods=['GET'])
+# @app.route('/test', methods=['GET'])
 # def test():
 #     try:
 #         objects = session.query(WorldObject).all()
@@ -63,15 +63,15 @@ def on_leave(data):
 #         print(e) #TODO: logs
 
 ### SCHEDULER FUNC ###
-# {"object": object, "paths": path[moves as config.directions], "target_x": true, "target_y": false}
+# {'object': object, 'paths': path[moves as config.directions], 'target_x': true, 'target_y': false}
 movement = []
 def emit_move(movement_array):
     for item in move_objects(movement_array):
-        socketio.emit("move_objects", json.dumps(item), to=item["map_name"])
+        socketio.emit('move_objects', json.dumps(item), to=item['map_name'])
 
 def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(emit_move, 'interval', args=[movement], seconds=setting("move_object_speed_sec"), id="move_objects")
+    scheduler.add_job(emit_move, 'interval', args=[movement], seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='move_objects')
     scheduler.start()
 
 socketio.start_background_task(scheduler_start)
