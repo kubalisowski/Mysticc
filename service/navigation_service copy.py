@@ -1,8 +1,11 @@
 import random
 import time
+import json
+from database._db import session
 from service.db_service import *
 from service.world_service import *
 from service.util_service import *
+from service.navigation_service import *
 from service.world_service import *
 
 def draw_new_target(ecxlude_x, exclude_y, tiles_x, tiles_y):
@@ -17,22 +20,6 @@ def generate_path_for_object(object, obstacle_x, obstacle_y):
     #path = {"dir": dir, "x": target_x, "y": target_y } ##dir->direction
 
     return [] #list of WorldObjectPath
-
-def get_objects_path():
-    for map in get_all_maps():
-        static     = get_world_objects(map_id=map.id, static=True, moving=False)
-        idle       = filter(lambda x: time.monotonic() + x.next_move_monotonic > time.monotonic(), get_world_objects(static=False, moving=False))
-        to_move    = filter(lambda x: time.monotonic() + x.next_move_monotonic < time.monotonic(), get_world_objects(static=False, moving=False))
-        obstacles  = static + idle
-        obstacle_x = filter(lambda obj: obj.x, obstacles)
-        obstacle_y = filter(lambda obj: obj.y, obstacles)
-
-        paths = {}
-        for object in to_move:
-            path = generate_path_for_object(object, obstacle_x, obstacle_y)
-            paths.append(path)
-
-    return paths
 
 def move_objects(object_moves):
     try:
