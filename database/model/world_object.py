@@ -1,6 +1,6 @@
 from sqlalchemy import Column, DateTime, String, Integer, Boolean, Float, func
 from database._db import Base
-from service.util_service import *
+from service.util_service import *  
 
 class WorldObject(Base):
     __tablename__ = 'world_object'
@@ -11,14 +11,12 @@ class WorldObject(Base):
     y                   = Column(Integer)
     width               = Column(Integer)
     height              = Column(Integer)
-    frameX              = Column(Integer)
-    frameY              = Column(Integer)
-    speed_monotic       = Column(Integer)
+    speed_tics          = Column(Integer)
     moving              = Column(Boolean)
     img_src             = Column(String(length=100))
-    next_move_monotonic = Column(Float)
-    idle_time_monotonic = Column(Float)
-    player              = Column(Boolean)
+    next_move_tics      = Column(Float)
+    last_move_monotonic = Column(Float)
+    idle_time_tics      = Column(Float)
     static              = Column(Boolean)
 
     def json(self):

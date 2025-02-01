@@ -46,32 +46,16 @@ def on_leave(data):
     leave_room(room)    
     print('Leaved room')
 
-# @app.route('/test', methods=['GET'])
-# def test():
-#     try:
-#         objects = session.query(WorldObject).all()
-#         return make_response(jsonify([obj.json() for obj in objects]), 200)
-#     except Exception as e:
-#         return make_response(jsonify({'error message': '{0}'.format(e)}), 500)
+### MOVE OBJECTS ###
+def emit_move_objects():
+    for key, value in move_objects():
+        socketio.emit('move_objects', json.dumps(value), to=key)
 
 ### SCHEDULER ###
-# @socketio.on('world_objects_update')
-# def update_world_objects():
-#     try:
-#         socketio.emit('world_objects_update', get_all_world_objects_json())
-#     except Exception as e:
-#         print(e) #TODO: logs
-
-### SCHEDULER FUNC ###
-# {'object': object, 'paths': path[moves as config.directions], 'target_x': true, 'target_y': false}
-movement = []
-def emit_move(movement_array):
-    for item in move_objects(movement_array):
-        socketio.emit('move_objects', json.dumps(item), to=item['map_name'])
-
 def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(emit_move, 'interval', args=[movement], seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='move_objects')
+    scheduler.add_job(create_object_path, 'interval', seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='create_object_path')
+    scheduler.add_job(emit_move_objects,  'interval', seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='move_objects')
     scheduler.start()
 
 socketio.start_background_task(scheduler_start)
