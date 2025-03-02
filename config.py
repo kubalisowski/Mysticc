@@ -2,6 +2,7 @@
 CONNECTION_STRING = 'mariadb+mariadbconnector://root:pass@localhost/mysticc'
 SECRET_KEY = ''
 HOST = 'http://127.0.0.1:5000/'
+MOVE_OBJECT_FREQUENCY_SEC = 0.1
 
 ### CLIENT ###
 SCREEN = {} 
@@ -17,3 +18,6 @@ MAP_CONTAINER_WIDTH  = 0
 MAP_CONTAINER_HEIGHT = 0
 
 DIRS = { 'UP': 0, 'RIGHT': 1, 'DOWN': 2, 'LEFT': 3 }
+
+### COMMON ##
+DEFAULT_MAP_NAME = 'rootville'

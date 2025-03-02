@@ -10,6 +10,9 @@ class Map(Base):
     img_src      = Column(String(length=200))
     width_tile   = Column(Integer)
     height_tile  = Column(Integer)
+    grid         = Column(String(length=2000))
+    grid_row     = Column(Integer)
+    grid_col     = Column(Integer)
     
     def json(self):
         return get_props(self)

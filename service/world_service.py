@@ -4,7 +4,7 @@ from database.model.world_object import WorldObject
 from database.model.setting import Setting
 from database.model.map import Map
 from database.model.world_object_path import WorldObjectPath
-from util_service import *
+from service.util_service import *
 from sqlalchemy import asc
 
 ### MAP ###
@@ -47,4 +47,8 @@ def get_world_object_path_groupby(map_id=True, object_id=True):
 def delete_world_object_path(id):
     session.query(WorldObjectPath).filter(WorldObjectPath.id==id).delete()
     session.commit()
+
+def get_world_object_path():
+    return session.query(WorldObjectPath).all()
+
 

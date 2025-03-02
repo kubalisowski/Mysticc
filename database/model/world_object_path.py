@@ -19,9 +19,12 @@ class WorldObjectPath(Base):
 
 class WorldObjectPathClient:
     def __init__(self, object_id, direction, x, y, target_x, target_y):
-        self.object_id = object_id
+        self.object_id  = object_id
         self.direction  = direction
-        self.x  = x
-        self.y  = y
-        self.target_x  = target_x
-        self.target_y  = target_y
+        self.x          = x
+        self.y          = y
+        self.target_x   = target_x
+        self.target_y   = target_y
+    
+    def json(self):
+        return get_props(self)

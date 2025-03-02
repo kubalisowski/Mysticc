@@ -27,7 +27,7 @@ init_db()
 @app.route('/', methods=['GET'])
 def world():
     client_config = get_client_config()
-    client_config['DEFAULT_MAP_NAME'] = setting('DEFAULT_MAP_NAME')
+    client_config['DEFAULT_MAP_NAME'] = DEFAULT_MAP_NAME
     return render_template('world.html', config=json.dumps(client_config)) 
 
 # @socketio.on('rootville')
@@ -54,8 +54,8 @@ def emit_move_objects():
 ### SCHEDULER ###
 def scheduler_start():
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(create_object_path, 'interval', seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='create_object_path')
-    scheduler.add_job(emit_move_objects,  'interval', seconds=setting('MOVE_OBJECT_FREQUENCY_SEC'), id='move_objects')
+    scheduler.add_job(create_object_path, 'interval', seconds=MOVE_OBJECT_FREQUENCY_SEC, id='create_object_path')
+    scheduler.add_job(emit_move_objects,  'interval', seconds=MOVE_OBJECT_FREQUENCY_SEC, id='move_objects')
     scheduler.start()
 
 socketio.start_background_task(scheduler_start)

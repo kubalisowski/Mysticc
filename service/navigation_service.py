@@ -1,29 +1,60 @@
 import random
 import time
-from database.model.enum import Directions
-from database.model.world_object import *
+from database.model.enum              import Directions
+from database.model.world_object      import *
 from database.model.world_object_path import *
-from service.db_service import *
-from service.world_service import *
-from service.util_service import *
-from service.world_service import *
-from database._db import session
+from service.db_service               import *
+from service.world_service            import *
+from service.util_service             import *
+from service.world_service            import *
+from service.path_algoritm            import *
+from database._db                     import session
 
-def draw_new_target(ecxlude_x, exclude_y, tiles_x, tiles_y):
-    new_x = random.choice([i for i in range(1,tiles_x) if i not in ecxlude_x])
-    new_y = random.choice([i for i in range(1,tiles_y) if i not in exclude_y])
-    return {"x" : new_x, "y": new_y }
+def draw_new_target(ecxlude_x, exclude_y, grid_col, grid_row):
+    new_x = random.choice([i for i in range(1, grid_col) if i not in ecxlude_x])
+    new_y = random.choice([i for i in range(1, grid_row) if i not in exclude_y])
+    return [new_y, new_x]
 
-def object_path_algorithm(object, obstacle_x, obstacle_y):
-    if (object.x == 0 or object.y == 0):
-        return {"error": 0}
-    path = None # TODO: A* to be implemented -> use path finding algorith (A*) and return directions (direction.py) return array of directions;
-    #path = {"dir": dir, "x": target_x, "y": target_y } ##dir->direction
+def object_path_algorithm(map, object, obstacle_x, obstacle_y):
+    info            = AStarInfo()
+    info.GRID_ROW   = len(map.GRID_ROW)  
+    info.GRID_COL   = len(map.GRID_COL)  
+    info.src        = [object.y, object.x]
+    info.dest       = draw_new_target(obstacle_x, obstacle_y, info.GRID_ROW, info.GRID_COL)
+    a_star_movement = a_star(info, map.grid)
+    del a_star_movement[0] # first element is curent object position
+    dirs = make_directions(a_star_movement)
+    single_object_path = []
+    for index, value in enumerate(dirs):
+        world_object_path           = WorldObjectPath()
+        world_object_path.map_id    = map.id
+        world_object_path.direction = value
+        world_object_path.object_id = object.id
+        world_object_path.target_y  = info.dest[0]
+        world_object_path.target_x  = info.dest[1]
+        world_object_path.order     = index
+        single_object_path.append(world_object_path)
 
-    return [] #list of WorldObjectPathClient
+    return single_object_path
 
-def get_object_path():
-    path_for_map = {}
+def make_directions(a_star_movement):
+    path_dirs = []
+    for index, value in enumerate(a_star_movement):
+        if(index > 0): 
+            if(a_star_movement[index][0] is not a_star_movement[index - 1][0]):
+                if(a_star_movement[index][0] < a_star_movement[index - 1][0]):
+                    path_dirs.append(Directions.UP)
+                elif(a_star_movement[index][0] > a_star_movement[index - 1][0]):
+                    path_dirs.append(Directions.DOWN)
+            
+            elif(a_star_movement[index][1] is not a_star_movement[index - 1][1]):
+                if(a_star_movement[index][1] < a_star_movement[index - 1][1]):
+                    path_dirs.append(Directions.LEFT)
+                elif(a_star_movement[index][1] > a_star_movement[index - 1][0]):
+                    path_dirs.append(Directions.RIGHT)
+
+
+def get_object_path(collide = False):
     for map in get_all_maps():
         static     = get_world_objects(map_id=map.id, static=True)
         idle       = filter(lambda x: x.last_move_monotonic + x.idle_time_tics < time.monotonic(), get_world_objects(static=False, moving=False))
@@ -33,16 +64,17 @@ def get_object_path():
         obstacle_y = list(filter(lambda obj: obj.y, obstacles))
 
         for object in to_move:
-            path_for_map[map.name] = object_path_algorithm(object, obstacle_x, obstacle_y)
-            obstacle_x.append(object.x)
-            obstacle_y.append(object.y)
-
-    return path_for_map
+            if(not collide):
+                obstacle_x.append(object.x)
+                obstacle_y.append(object.y)
+            yield object_path_algorithm(map, object, obstacle_x, obstacle_y)
+            
 
 def create_object_path():
-    for map_name, world_object_path in get_object_path():
-        session.add_all(world_object_path)
-        session.commit()
+    for world_object_path_list in get_object_path():
+        for wrp in world_object_path_list:
+            session.add_all(wrp)
+            session.commit()
 
 def set_object_new_position(world_object, path):
     match path.direction:
@@ -68,9 +100,10 @@ def get_next_moves():
 def move_objects():
     try:
         for map_id, paths in get_next_moves():
+            client_paths = []
             for path in paths:
                 world_object = get_world_object(path.object_id)
-                if (time.monotonic() + world_object.next_move_monotic > time.monotonic()):                    
+                if (time.monotonic() + world_object.next_move_monotic > time.monotonic()):
                     if path.target_x and path.target_y: #target position
                         world_object.direction = None
                         world_object.moving    = False
@@ -84,8 +117,7 @@ def move_objects():
 
                     update_world_object(world_object)
                     delete_world_object_path(path.id)
-
-                    client_paths = []
+                    
                     client_paths.append(WorldObjectPathClient(world_object.object_id, path.direction, world_object.x, world_object.y, path.target_x, path.target_y))
             
             yield { get_map_by_id(map_id).name: client_paths } #to controller

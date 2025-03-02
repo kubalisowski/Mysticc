@@ -14,9 +14,17 @@ class Cell:
         # Heuristic cost to destination
         self.h = 0
 
+
+class AStarInfo():
+    def __init__(self):
+        self.GRID_ROW = 0  # Number of rows
+        self.GRID_COL = 0  # Number of columns
+        self.src      = [] # Start position
+        self.dest     = [] # Destination
+
 # Check if a cell is within the grid bounds
-def is_valid(cell, row, col):
-    return 0 <= row < cell.GRID_ROW and 0 <= col < cell.GRID_COL
+def is_valid(info, row, col):
+    return 0 <= row < info.GRID_ROW and 0 <= col < info.GRID_COL
 
 # Check if a cell is walkable
 def is_unblocked(grid, row, col):
@@ -31,7 +39,7 @@ def calculate_h_value(row, col, dest):
     return math.sqrt((row - dest[0]) ** 2 + (col - dest[1]) ** 2)
 
 # Trace and print the path from destination to source
-def trace_path(cell_details, dest):
+def trace_path(cell_details, dest, debug = False):
     path = []
     row, col = dest
 
@@ -40,22 +48,22 @@ def trace_path(cell_details, dest):
         row, col = cell_details[row][col].parent_y, cell_details[row][col].parent_x
 
     path.append((row, col))  # Add source
-    path.reverse()  # Reverse to get path from source to destination
+    path.reverse()           # Reverse to get path from source to destination
 
-    for step in path: # print path
-        print("->", step, end=" ")
-        print()
-
+    if (debug):
+        for step in path: # list of tuples
+            print("->", step, end=" ")
+            
     return path
 
 # Implement A* search
-def a_star_search(cell, grid):
+def a_star(info, grid, debug = False):
     # Extract source and destination coordinates
-    src_y, src_x = cell.src
-    dest_y, dest_x = cell.dest
+    src_y, src_x = info.src
+    dest_y, dest_x = info.dest
 
     # Ensure the source and destination are valid
-    if not is_valid(cell, src_y, src_x) or not is_valid(cell, dest_y, dest_x):
+    if not is_valid(info, src_y, src_x) or not is_valid(info, dest_y, dest_x):
         return
 
     # Ensure the source and destination are walkable
@@ -63,14 +71,14 @@ def a_star_search(cell, grid):
         return
 
     # Check if source is already the destination
-    if is_destination(src_y, src_x, cell.dest):
+    if is_destination(src_y, src_x, info.dest):
         return
 
     # Initialize visited cells
-    closed_list = [[False for _ in range(cell.GRID_COL)] for _ in range(cell.GRID_ROW)]
+    closed_list = [[False for _ in range(info.GRID_COL)] for _ in range(info.GRID_ROW)]
 
     # Initialize cell details
-    cell_details = [[Cell() for _ in range(cell.GRID_COL)] for _ in range(cell.GRID_ROW)]
+    cell_details = [[Cell() for _ in range(info.GRID_COL)] for _ in range(info.GRID_ROW)]
 
     # Initialize source cell details
     cell_details[src_y][src_x].f = 0
@@ -101,17 +109,17 @@ def a_star_search(cell, grid):
             new_y, new_x = y + dy, x + dx
 
             # Check if the neighbor is within bounds and walkable
-            if is_valid(cell, new_y, new_x) and is_unblocked(grid, new_y, new_x) and not closed_list[new_y][new_x]:
+            if is_valid(info, new_y, new_x) and is_unblocked(grid, new_y, new_x) and not closed_list[new_y][new_x]:
                 # If it's the destination, reconstruct and return path
-                if is_destination(new_y, new_x, cell.dest):
+                if is_destination(new_y, new_x, info.dest):
                     cell_details[new_y][new_x].parent_y = y
                     cell_details[new_y][new_x].parent_x = x
                     found_dest = True
-                    return trace_path(cell_details, cell.dest)
+                    return trace_path(cell_details, info.dest, debug)
 
                 # Compute new f, g, and h values
                 g_new = cell_details[y][x].g + 1.0
-                h_new = calculate_h_value(new_y, new_x, cell.dest)
+                h_new = calculate_h_value(new_y, new_x, info.dest)
                 f_new = g_new + h_new
 
                 # If this path is better, update the cell details
@@ -125,11 +133,12 @@ def a_star_search(cell, grid):
 
     # If we exit the loop without finding the destination
     if not found_dest:
-        raise ValueError("Failed to find the destination.")
+        raise ValueError("AStar: Failed to find the destination.")
 
-# Main function
+
+### DEBUG ###
 def main():
-    # Define the grid (1 = walkable, 0 = blocked)
+    # 1: walkable, 0: blocked
     grid = [
         [1, 0, 1, 1, 1, 1, 0, 1, 1, 1],
         [1, 1, 1, 0, 1, 1, 1, 0, 1, 1],
@@ -143,14 +152,13 @@ def main():
     ]
 
     # Initialize cell grid size
-    cell = Cell()
-    cell.GRID_ROW = len(grid)  # Number of rows
-    cell.GRID_COL = len(grid[0])  # Number of columns
-    cell.src = [8, 0]  # Start position
-    cell.dest = [0, 0]  # End position
+    info = AStarInfo()
+    info.GRID_ROW = len(grid)     # Number of rows
+    info.GRID_COL = len(grid[0])  # Number of columns
+    info.src      = [8, 0]        # Start position
+    info.dest     = [0, 0]        # End position
 
     # Run A* search
-    test = a_star_search(cell, grid)
-    print(test)
+    a_star(info, grid, True)
 
 main()
