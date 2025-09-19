@@ -64,7 +64,7 @@ def get_object_path(collide = False):
         obstacle_y = list(filter(lambda obj: obj.y, obstacles))
 
         for object in to_move:
-            if(not collide):
+            if(not collide): #can the objects collide?
                 obstacle_x.append(object.x)
                 obstacle_y.append(object.y)
             yield object_path_algorithm(map, object, obstacle_x, obstacle_y)
