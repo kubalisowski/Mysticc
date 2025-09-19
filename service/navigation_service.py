@@ -96,6 +96,7 @@ def get_next_moves():
                 for world_object_path in group_by_object_id: # group_by object_id
                     moves.append(world_object_path[0]) # first row=> next move
         next_moves[map.id] = moves
+    return next_moves
 
 def move_objects():
     try:
