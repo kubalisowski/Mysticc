@@ -45,7 +45,7 @@ def get_world_object_path_groupby(map_id=True, object_id=True):
     return session.query(WorldObjectPath).group_by(WorldObjectPath.map_id).group_by(WorldObjectPath.object_id).order_by(asc(WorldObjectPath.order)).all()
 
 def delete_world_object_path(id):
-    session.query(WorldObjectPath).filter(WorldObjectPath.id==id).delete()
+    session.query(WorldObjectPath).filter(id=id).delete()
     session.commit()
 
 def get_world_object_path():

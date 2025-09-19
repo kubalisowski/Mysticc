@@ -104,7 +104,7 @@ def move_objects():
             client_paths = []
             for path in paths:
                 world_object = get_world_object(path.object_id)
-                if (time.monotonic() + world_object.next_move_monotic > time.monotonic()):
+                if (world_object.next_move_monotic > time.monotonic()):
                     if path.target_x and path.target_y: #target position
                         world_object.direction = None
                         world_object.moving    = False
