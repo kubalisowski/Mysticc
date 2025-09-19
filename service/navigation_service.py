@@ -84,7 +84,7 @@ def set_object_new_position(world_object, path):
             world_object.y -= 1
         case Directions.RIGHT:
             world_object.x += 1
-        case Directions.RIGHT:
+        case Directions.LEFT:
             world_object.x -= 1
 
 def get_next_moves():
